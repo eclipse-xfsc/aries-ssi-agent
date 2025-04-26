@@ -1,0 +1,21 @@
+# Ignore everything
+*
+
+# Except for these files
+!*.ts
+!*.d.ts
+!*.mts
+!jest.config.js
+!*.json
+
+# .. also in subdirectories
+!*/
+
+# ... in these ones
+!apps/**/src/*
+
+# Explicitly ignore these locations
+node_modules
+apps/**/dist
+compose
+documentation

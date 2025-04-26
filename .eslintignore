@@ -1,0 +1,19 @@
+# Ignore everything
+*
+
+# Except these files
+!*.ts
+!*.mts
+!*.d.ts
+
+# .. also in subdirectories
+!*/
+
+# ... in these directories
+!apps/**/src/*
+
+# Explicitly ignore these locations
+node_modules
+apps/**/dist
+compose
+documentation

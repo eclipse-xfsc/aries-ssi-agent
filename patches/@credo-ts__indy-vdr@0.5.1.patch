@@ -1,0 +1,48 @@
+diff --git a/build/IndyVdrApi.d.ts b/build/IndyVdrApi.d.ts
+index 7f999b6c62ef145527386c7ffa980b8ffc166f0b..24f9ffe708bbc5382d7df3866e601b43b0488ae4 100644
+--- a/build/IndyVdrApi.d.ts
++++ b/build/IndyVdrApi.d.ts
+@@ -31,4 +31,5 @@ export declare class IndyVdrApi {
+      * @returns An endorsed transaction
+      */
+     endorseTransaction(transaction: string | Record<string, unknown>, endorserDid: string): Promise<string>;
++    submitTransaction(transaction:string | Record<string, unknown>, submitterDid:string): Promise<void>;
+ }
+diff --git a/build/IndyVdrApi.js b/build/IndyVdrApi.js
+index 689a3c4d325d8f04947fac8b12699e53b94d94e1..cfe3af00a0b66ad0c5a0d50f8511bc4fc3aaddb4 100644
+--- a/build/IndyVdrApi.js
++++ b/build/IndyVdrApi.js
+@@ -73,6 +73,18 @@ let IndyVdrApi = class IndyVdrApi {
+         }
+         return endorsedTransaction.body;
+     }
++    async submitTransaction(txn, submitterDid) {
++        const request = new indy_vdr_shared_1.CustomRequest({
++        customRequest: txn,
++        });
++
++        const {namespace } = (0, anoncreds_1.parseIndyDid)(submitterDid);
++
++        return await this.indyVdrPoolService.submitTransaction(
++        request,
++        namespace
++        );
++    }
+ };
+ IndyVdrApi = __decorate([
+     (0, core_1.injectable)(),
+diff --git a/build/pool/IndyVdrPoolService.js b/build/pool/IndyVdrPoolService.js
+index 3e69749698dc827747b197faea5da46d042463d1..9188a53577a185a97ed0a1a56baa459e056d4e72 100644
+--- a/build/pool/IndyVdrPoolService.js
++++ b/build/pool/IndyVdrPoolService.js
+@@ -165,6 +165,10 @@ let IndyVdrPoolService = class IndyVdrPoolService {
+             throw error;
+         }
+     }
++    async submitTransaction(txn, indyNamespace) {
++        const pool = this.getPoolForNamespace(indyNamespace)
++        return await pool.submitRequest(txn)
++    }
+ };
+ IndyVdrPoolService = __decorate([
+     (0, core_1.injectable)(),

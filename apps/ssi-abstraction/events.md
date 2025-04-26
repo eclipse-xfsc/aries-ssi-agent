@@ -1,0 +1,42 @@
+# OCM NATS Events
+
+| Token |
+|-|
+| `didcomm.connections.getAll` |
+| `didcomm.connections.getById` |
+| `didcomm.connections.createInvitation` |
+| `didcomm.connections.receiveInvitationFromUrl` |
+| `didcomm.connections.createWithSelf` |
+| `didcomm.connections.block` |
+| `didcomm.connections.parseInvitation` |
+| `anoncreds.credentialDefinitions.getAll` |
+| `anoncreds.credentialDefinitions.getById` |
+| `anoncreds.credentialDefinitions.register` |
+| `anoncreds.credentials.getAll` |
+| `anoncreds.credentials.getById` |
+| `didcomm.anoncreds.credentials.acceptOffer` |
+| `didcomm.anoncreds.credentials.offer` |
+| `didcomm.anoncreds.credentials.offerToSelf` |
+| `anoncreds.credentials.offerToSelf.deleteById` |
+| `anoncreds.credentialOffers.getAll` |
+| `anoncreds.credentialOffers.getById` |
+| `anoncreds.credentialRequests.getAll` |
+| `anoncreds.credentialRequests.getById` |
+| `dids.resolve` |
+| `dids.register.indy.endorser` |
+| `dids.register.indy.fromSeed` |
+| `dids.didConfiguration` |
+| `anoncreds.proofs.getAll` |
+| `anoncreds.proofs.getById` |
+| `didcomm.anoncreds.proofs.request` |
+| `anoncreds.proofs.deleteById` |
+| `didcomm.anoncreds.proofs.acceptRequest` |
+| `anoncreds.revocation.revoke` |
+| `anoncreds.revocation.registerRevocationStatusList` |
+| `anoncreds.revocation.tailsFile` |
+| `anoncreds.revocation.checkCredentialStatus` |
+| `anoncreds.schemas.getAll` |
+| `anoncreds.schemas.getById` |
+| `anoncreds.schemas.register` |
+| `tenants.create` |
+| `tenants.getAllTenantIds` |

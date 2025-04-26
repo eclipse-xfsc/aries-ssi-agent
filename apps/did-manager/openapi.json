@@ -1,0 +1,300 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/v1/dids/{did}": {
+      "get": {
+        "operationId": "DIDsController_resolve",
+        "summary": "Resolve DID",
+        "description": "Resolve DID",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "did",
+            "required": true,
+            "in": "path",
+            "description": "DID to resolve",
+            "example": "did:example:123",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "DID resolved successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "DID resolved successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "DID resolved successfully",
+                      "data": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid DID",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Invalid DID": {
+                    "value": { "statusCode": 400, "message": "Invalid DID" }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "DID not found",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found"
+                    }
+                  },
+                  "DID not found": {
+                    "value": { "statusCode": 404, "message": "DID not found" }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Something went wrong",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Something went wrong": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Something went wrong",
+                      "error": "Internal Server Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["DIDs"]
+      }
+    },
+    "/v1/dids": {
+      "post": {
+        "operationId": "DIDsController_registerFromSeed",
+        "summary": "Register DID from seed",
+        "description": "Register DID from seed",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterFromSeedPayload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "DID registered successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "DID registered successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "DID registered successfully",
+                      "data": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid seed",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Invalid seed": {
+                    "value": { "statusCode": 400, "message": "Invalid seed" }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tenant not found",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Something went wrong",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Something went wrong": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Something went wrong",
+                      "error": "Internal Server Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["DIDs"]
+      }
+    },
+    "/v1/dids/configuration": {
+      "post": {
+        "operationId": "DIDsController_getConfiguration",
+        "summary": "Get DID configuration",
+        "description": "Get DID configuration",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetConfigurationPayload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "DID configuration fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "DID configuration fetched successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "DID configuration fetched successfully",
+                      "data": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tenant not found",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Something went wrong",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Something went wrong": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Something went wrong",
+                      "error": "Internal Server Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["DIDs"]
+      }
+    }
+  },
+  "info": { "title": "", "description": "", "version": "1.0.0", "contact": {} },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "RegisterFromSeedPayload": {
+        "type": "object",
+        "properties": {
+          "seed": {
+            "type": "string",
+            "description": "Seed to use for DID generation",
+            "example": "000000000000000000000000Steward1"
+          },
+          "services": {
+            "description": "Services to associate with DID",
+            "example": [
+              {
+                "identifier": "example",
+                "url": "https://example.com",
+                "type": "example"
+              }
+            ],
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "required": ["seed", "services"]
+      },
+      "GetConfigurationPayload": { "type": "object", "properties": {} }
+    }
+  }
+}

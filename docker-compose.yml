@@ -1,0 +1,205 @@
+version: '3.9'
+
+services:
+  nats:
+    image: nats
+    ports:
+      - ${NATS_PORT:-4222}:4222 #Nats server port`
+      - ${NATS_MONITORING_PORT:-8222}:8222 #Nats server Monitoring port
+    command:
+      [
+        '--config',
+        'nats-server.conf',
+        '--debug',
+        '--trace',
+        '--user',
+        'nats_user',
+        '--pass',
+        'nats_password',
+      ]
+
+  s3:
+    image: minio/minio
+    ports:
+      - ${S3_PORT:-9000}:9000
+      - ${S3_CONSOLE_PORT:-9001}:9001
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    command: ['server', '/data', '--console-address', ':9001']
+    volumes:
+      - /data
+
+  init-s3:
+    image: minio/mc
+    entrypoint: >
+      /bin/sh -c "
+        sleep 1;
+        /usr/bin/mc config host add ssi-s3 http://s3:9000 minio minio123;
+        /usr/bin/mc mb --ignore-existing ssi-s3/ssi;
+        /usr/bin/mc anonymous set download ssi-s3/ssi;
+        /usr/bin/mc admin user add ssi-s3 ssi-abstraction very-long-secret-key;
+        /usr/bin/mc admin policy attach ssi-s3 readwrite --user=ssi-abstraction;
+        exit 0;
+      "
+    depends_on:
+      - s3
+
+  postgres:
+    image: postgres
+    ports:
+      - ${POSTGRES_PORT:-5432}:5432
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+
+  ssi-abstraction:
+    build:
+      args:
+        - SERVICE=ssi-abstraction
+    init: true
+    ports:
+      - '${SSI_PORT:-4000}:3000'
+      - '${SSI_AGENT_PORT:-4005}:${SSI_AGENT_PORT:-4005}'
+    environment:
+      HTTP_PORT: 3000
+      NATS_URL: nats://nats:4222
+      NATS_USER: nats_user
+      NATS_PASSWORD: nats_password
+      AGENT_NAME: ssi-abstraction-agent
+      AGENT_WALLET_ID: ssi-wallet-id
+      AGENT_WALLET_KEY: ssi-wallet-key
+      AGENT_HOST: ${SSI_AGENT_HOST:-http://host.docker.internal}
+      AGENT_INBOUND_PORT: ${SSI_AGENT_PORT:-4005}
+      AGENT_LEDGER_ID: BCOVRIN_TEST
+      AGENT_INDY_DID_SEED: 6b8b882e2618fa5d45ee7229ca000000
+      AGENT_AUTO_ACCEPT_CONNECTION: true
+      AGENT_AUTO_ACCEPT_CREDENTIAL: contentApproved
+      AGENT_WALLET_STORAGE_TYPE: postgres
+      AGENT_WALLET_STORAGE_CONFIG_HOST: postgres:5432
+      AGENT_WALLET_STORAGE_CONFIG_TIMEOUT: 10
+      AGENT_WALLET_STORAGE_CREDENTIALS_ACCOUNT: postgres
+      AGENT_WALLET_STORAGE_CREDENTIALS_PASSWORD: postgres
+      AGENT_WALLET_STORAGE_CREDENTIALS_ADMIN_ACCOUNT: postgres
+      AGENT_WALLET_STORAGE_CREDENTIALS_ADMIN_PASSWORD: postgres
+      TAILS_SERVER_BASE_URL: http://s3:9000
+      TAILS_SERVER_BUCKET_NAME: ssi
+      S3_ACCESS_KEY: ssi-abstraction
+      S3_SECRET: very-long-secret-key
+    depends_on:
+      - nats
+      - init-s3
+      - postgres
+    networks:
+      - default
+      - ocm-network
+
+  schema-manager:
+    build:
+      args:
+        - SERVICE=schema-manager
+    init: true
+    environment:
+      HTTP_PORT: 3000
+      NATS_URL: nats://nats:4222
+      NATS_USER: nats_user
+      NATS_PASSWORD: nats_password
+      NATS_MONITORING_URL: http://nats:8222
+    ports:
+      - '${SCHEMA_MANAGER_PORT:-4001}:3000'
+    depends_on:
+      - nats
+
+  connection-manager:
+    build:
+      args:
+        - SERVICE=connection-manager
+    init: true
+    environment:
+      HTTP_HOST: 0.0.0.0
+      HTTP_PORT: 3000
+      NATS_URL: nats://nats:4222
+      NATS_USER: nats_user
+      NATS_PASSWORD: nats_password
+      NATS_MONITORING_URL: http://nats:8222
+    ports:
+      - '${CONNECTION_MANAGER_PORT:-4002}:3000'
+    depends_on:
+      - nats
+
+  credential-manager:
+    build:
+      args:
+        - SERVICE=credential-manager
+    init: true
+    environment:
+      HTTP_HOST: 0.0.0.0
+      HTTP_PORT: 3000
+      NATS_URL: nats://nats:4222
+      NATS_USER: nats_user
+      NATS_PASSWORD: nats_password
+      NATS_MONITORING_URL: http://nats:8222
+    ports:
+      - '${CREDENTIAL_MANAGER:-4003}:3000'
+    depends_on:
+      - nats
+
+  proof-manager:
+    build:
+      args:
+        - SERVICE=proof-manager
+    init: true
+    environment:
+      HTTP_HOST: 0.0.0.0
+      HTTP_PORT: 3000
+      NATS_URL: nats://nats:4222
+      NATS_USER: nats_user
+      NATS_PASSWORD: nats_password
+      NATS_MONITORING_URL: http://nats:8222
+    ports:
+      - '${PROOF_MANAGER_PORT:-4004}:3000'
+    depends_on:
+      - nats
+
+  did-manager:
+    build:
+      args:
+        - SERVICE=did-manager
+    init: true
+    environment:
+      HTTP_HOST: 0.0.0.0
+      HTTP_PORT: 3000
+      NATS_URL: nats://nats:4222
+      NATS_USER: nats_user
+      NATS_PASSWORD: nats_password
+      NATS_MONITORING_URL: http://nats:8222
+    ports:
+      - '${DID_MANAGER_PORT:-4006}:3000'
+    depends_on:
+      - nats
+
+  tenant-manager:
+    build:
+      args:
+        - SERVICE=tenant-manager
+    init: true
+    environment:
+      HTTP_HOST: 0.0.0.0
+      HTTP_PORT: 3000
+      NATS_URL: nats://nats:4222
+      NATS_USER: nats_user
+      NATS_PASSWORD: nats_password
+      NATS_MONITORING_URL: http://nats:8222
+    ports:
+      - '${TENANT_MANAGER_PORT:-4007}:3000'
+    depends_on:
+      - nats
+
+volumes:
+  postgresql-data:
+
+networks:
+  ocm-network:
+    external: true
+    driver: bridge

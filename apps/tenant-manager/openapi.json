@@ -1,0 +1,50 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/v1/tenants": {
+      "get": {
+        "operationId": "TenantsController_find",
+        "parameters": [],
+        "responses": { "200": { "description": "" } },
+        "tags": ["Tenants"]
+      },
+      "post": {
+        "operationId": "TenantsController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateTenantPayload" }
+            }
+          }
+        },
+        "responses": { "201": { "description": "" } },
+        "tags": ["Tenants"]
+      }
+    }
+  },
+  "info": {
+    "title": "Gaia-X OCM Tenant Manager",
+    "description": "",
+    "version": "1.0.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "CreateTenantPayload": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "description": "The label of the tenant",
+            "example": "Alice"
+          }
+        },
+        "required": ["label"]
+      }
+    }
+  }
+}

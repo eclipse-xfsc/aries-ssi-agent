@@ -1,0 +1,23 @@
+include:
+- project: 'eclipse/xfsc/dev-ops/ci-templates'  
+  file: 'helm-build-ci.yaml'  
+  ref: main
+- project: 'eclipsefdn/it/releng/gitlab-runner-service/gitlab-ci-templates'
+  file: '/jobs/buildkit.gitlab-ci.yml'
+
+stages:
+  - build
+  - release
+
+docker-build:
+  extends: .buildkit
+  parallel:
+    matrix:
+      - SERVICE: [connection-manager, credential-manager,did-manager,proof-manager,ssi-abstraction,schema-manager,tenant-manager]
+  stage: build
+  variables:
+    CI_REGISTRY: ${HARBOR_HOST}
+    CI_REGISTRY_USER: ${HARBOR_USERNAME}
+    CI_REGISTRY_PASSWORD: ${HARBOR_PASSWORD}
+    CI_REGISTRY_IMAGE: ${HARBOR_HOST}/${HARBOR_PROJECT}/$SERVICE
+    BUILD_ARG: "--opt build-arg:SERVICE=${SERVICE}"

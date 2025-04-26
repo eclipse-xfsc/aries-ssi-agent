@@ -1,0 +1,538 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/v1/health": {
+      "get": {
+        "operationId": "HealthController_getHealth",
+        "summary": "Health check",
+        "description": "This call provides the capability to check the service is working and up. The call returns 200 Status Code and current server time in json body",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Service is up and running.",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Service is up and running.": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Thu Jan 01 1970 00:00:00 GMT+0000 (Coordinated Universal Time)"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/invitation-url": {
+      "post": {
+        "operationId": "ConnectionsController_createConnectionInvitation",
+        "summary": "Create new connection invitation",
+        "description": "This call provides the capability to create new connection invitation by providing alias parameter for taht connection in the body of request. Alias can be one of value: trust/subscriber/trust. This call returns  an object contains three fields. invitationUrl, invitationUrlShort, invitation object and connection object. You can use invitationUrlShort or invitationUrl to create QR code which can be scanned by PCM. It's better to use invitationUrlShort because long string of invitationUrl replaced with short id and QR code can be displayed properly",
+        "parameters": [
+          {
+            "name": "alias",
+            "required": true,
+            "in": "query",
+            "schema": {}
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConnectionCreateInvitationDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Connection created successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Connection created successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Connection created successfully",
+                      "data": {
+                        "invitationUrl": "https://serviceEndpointUrl.com:443/ocm/didcomm?c_i=eyJAdHlwZSI6Imh0dHBzOi",
+                        "invitation": {
+                          "@type": "https://didcomm.org/connections/1.0/invitation",
+                          "@id": "efe3fe97",
+                          "label": "ssi-abstraction-agent",
+                          "recipientKeys": ["8iT6AAmbj9P"],
+                          "serviceEndpoint": "https://serviceEndpointUrl.com:443/ocm/didcomm",
+                          "routingKeys": []
+                        },
+                        "connection": {
+                          "_tags": {},
+                          "metadata": {},
+                          "id": "507de3ab",
+                          "createdAt": "1970-01-01T00:00:00.358Z",
+                          "did": "F9xYT1m",
+                          "didDoc": {
+                            "@context": "https://w3id.org/did/v1",
+                            "publicKey": [
+                              {
+                                "id": "F9xYT1m",
+                                "controller": "F9xYT1m",
+                                "type": "Ed25519VerificationKey2018",
+                                "publicKeyBase58": "8iT6AAmbj9P"
+                              }
+                            ],
+                            "service": [
+                              {
+                                "id": "F9xYT1m#IndyAgentService",
+                                "serviceEndpoint": "https://serviceEndpointUrl.com:443/ocm/didcomm",
+                                "type": "IndyAgent",
+                                "priority": 0,
+                                "recipientKeys": ["8iT6AAmbj9P"],
+                                "routingKeys": []
+                              }
+                            ],
+                            "authentication": [
+                              {
+                                "publicKey": "F9xYT1m",
+                                "type": "Ed25519SignatureAuthentication2018"
+                              }
+                            ],
+                            "id": "F9xYT1m"
+                          },
+                          "verkey": "8iT6AAmbj9P",
+                          "state": "invited",
+                          "role": "inviter",
+                          "alias": "trust",
+                          "invitation": {
+                            "@type": "https://didcomm.org/connections/1.0/invitation",
+                            "@id": "efe3fe97",
+                            "label": "ssi-abstraction-agent",
+                            "recipientKeys": ["8iT6AAmbj9P"],
+                            "serviceEndpoint": "https://serviceEndpointUrl.com:443/ocm/didcomm",
+                            "routingKeys": []
+                          },
+                          "multiUseInvitation": false
+                        },
+                        "invitationUrlShort": "https://serviceEndpointUrl.com/ocm/connection/v1/url/1234abc"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Alias must be provided",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Alias must be provided": {
+                    "value": {
+                      "statusCode": 400,
+                      "message": "Alias must be provided"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Agent Data not found.",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Agent Data not found.": {
+                    "value": {
+                      "statusCode": 400,
+                      "message": "Agent Data not found."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Connections"]
+      }
+    },
+    "/v1/connection-information": {
+      "get": {
+        "operationId": "ConnectionsController_getConnectionInformationRequest",
+        "summary": "Fetch connection information by id or did",
+        "description": "This call provides the capability to get information about connection by connectionId or did. This call returns issued credentials and requested proof to that connection",
+        "parameters": [
+          {
+            "name": "did",
+            "required": false,
+            "in": "query",
+            "schema": {}
+          },
+          {
+            "name": "connectionId",
+            "required": false,
+            "in": "query",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Connection information fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Connection information fetched successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Connection information fetched successfully",
+                      "data": {
+                        "records": {
+                          "issueCredentials": [
+                            {
+                              "id": "6a6ee15d",
+                              "credentialId": "624a76fd",
+                              "credDefId": "8y8oycXjn",
+                              "threadId": "9f95a52a",
+                              "state": "done",
+                              "principalDid": "KGaeQVa",
+                              "connectionId": "12cd39de",
+                              "createdDate": "1970-01-01T00:00:00.149Z",
+                              "updatedDate": "1970-01-01T00:00:00.467Z",
+                              "expirationDate": null
+                            }
+                          ],
+                          "presentProofs": []
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "connection ID / DID must be provided",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "connection ID / DID must be provided": {
+                    "value": {
+                      "statusCode": 400,
+                      "message": "connection ID / DID must be provided"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Connections"]
+      }
+    },
+    "/v1/connections": {
+      "get": {
+        "operationId": "ConnectionsController_getConnectionLists",
+        "summary": "Fetch list of connections",
+        "description": "This call provides the capability to search connections by using pagination and filter parameters. This call returns a list of connections and overall count of records. This endpoint supports followinng query filter parameters: participantDID, status, pageSize, page",
+        "parameters": [
+          {
+            "name": "participantDID",
+            "required": false,
+            "in": "query",
+            "schema": {}
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {}
+          },
+          {
+            "name": "pageSize",
+            "required": false,
+            "in": "query",
+            "schema": {}
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Connections fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Connections fetched successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Connections fetched successfully",
+                      "data": {
+                        "count": 1,
+                        "records": [
+                          {
+                            "id": "089e1b95",
+                            "connectionId": "e7361a1b",
+                            "status": "invited",
+                            "participantDid": "Kv6NS9y",
+                            "theirDid": "",
+                            "theirLabel": "",
+                            "createdDate": "1970-01-01T00:00:00.617Z",
+                            "updatedDate": "1970-01-01T00:00:00.617Z",
+                            "isActive": false,
+                            "isReceived": false
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No Data found",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "No Data found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "No Data found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Connections"]
+      }
+    },
+    "/v1/connections/{connectionId}": {
+      "get": {
+        "operationId": "ConnectionsController_getConnection",
+        "summary": "Fetch connection by id",
+        "description": "This call provides the capability to get connection data by providing connectionId. The connection data is the same which is returned from /v1/connections endpoint and contains generic information about connection like connectionId, status, dids and so on.",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Connections fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Connections fetched successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Connections fetched successfully",
+                      "data": {
+                        "count": 1,
+                        "records": [
+                          {
+                            "id": "089e1b95",
+                            "connectionId": "e7361a1b",
+                            "status": "invited",
+                            "participantDid": "Kv6NS9y",
+                            "theirDid": "",
+                            "theirLabel": "",
+                            "createdDate": "1970-01-01T00:00:00.617Z",
+                            "updatedDate": "1970-01-01T00:00:00.617Z",
+                            "isActive": false,
+                            "isReceived": false
+                          }
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No Data found",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "No Data found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "No Data found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Connections"]
+      }
+    },
+    "/v1/accept-connection-invitation": {
+      "post": {
+        "operationId": "ConnectionsController_acceptConnectionInvitation",
+        "summary": "Accept connection invitation",
+        "description": "This call provides the capability to receive connection invitation as invitee by invitationUrl and create connection. If auto accepting is enabled via either the config passed in the function or the global agent config, a connection request message will be send.",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AcceptConnectionInvitationBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted Connection Request",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Accepted Connection Request": {
+                    "value": {
+                      "statusCode": 202,
+                      "message": "Accepted Connection Request",
+                      "data": {
+                        "_tags": {
+                          "invitationKey": "5Nj",
+                          "state": "invited",
+                          "role": "invitee",
+                          "verkey": "F6d"
+                        },
+                        "metadata": {},
+                        "id": "e6d30380",
+                        "createdAt": "1970-01-01T00:00:00.103Z",
+                        "did": "Ss8",
+                        "didDoc": {
+                          "@context": "https://w3id.org/did/v1",
+                          "publicKey": [
+                            {
+                              "id": "Ss8#1",
+                              "controller": "Ss8",
+                              "type": "Ed25519VerificationKey2018",
+                              "publicKeyBase58": "F6d"
+                            }
+                          ],
+                          "service": [
+                            {
+                              "id": "Ss8",
+                              "serviceEndpoint": "https://serviceEndpointUrl.com:443/ocm/didcomm",
+                              "type": "IndyAgent",
+                              "priority": 0,
+                              "recipientKeys": ["F6d"],
+                              "routingKeys": []
+                            }
+                          ],
+                          "authentication": [
+                            {
+                              "publicKey": "Ss8#1",
+                              "type": "Ed25519SignatureAuthentication2018"
+                            }
+                          ],
+                          "id": "Ss8"
+                        },
+                        "verkey": "F6d",
+                        "theirLabel": "ssi-abstraction-agent",
+                        "state": "requested",
+                        "role": "invitee",
+                        "alias": "connection-received",
+                        "autoAcceptConnection": true,
+                        "invitation": {
+                          "@type": "https://didcomm.org/connections/1.0/invitation",
+                          "@id": "12ebbf61",
+                          "label": "ssi-abstraction-agent",
+                          "recipientKeys": ["5Nj"],
+                          "serviceEndpoint": "https://serviceEndpointUrl.com:443/ocm/didcomm",
+                          "routingKeys": []
+                        },
+                        "multiUseInvitation": false
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error or Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Internal Server Error or Bad Request": {
+                    "value": {
+                      "statusCode": 500,
+                      "timestamp": "1970-01-01T00:00:00.668Z",
+                      "message": "something went wrong: Lorem Ipsum"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Connections"]
+      }
+    }
+  },
+  "info": {
+    "title": "Gaia-x Connection Manager API",
+    "description": "API documentation for GAIA-X Connection Manager",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "ConnectionCreateInvitationDto": {
+        "type": "object",
+        "properties": {
+          "autoAcceptConnection": {
+            "type": "boolean"
+          },
+          "alias": {
+            "type": "string"
+          },
+          "myLabel": {
+            "type": "string"
+          },
+          "myImageUrl": {
+            "type": "string"
+          }
+        },
+        "required": ["autoAcceptConnection", "alias", "myLabel", "myImageUrl"]
+      },
+      "AcceptConnectionInvitationBody": {
+        "type": "object",
+        "properties": {
+          "invitationUrl": {
+            "type": "string"
+          },
+          "autoAcceptConnection": {
+            "type": "boolean"
+          }
+        },
+        "required": ["invitationUrl", "autoAcceptConnection"]
+      }
+    }
+  }
+}

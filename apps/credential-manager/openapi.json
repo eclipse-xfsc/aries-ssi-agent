@@ -1,0 +1,1217 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/v1/credentials": {
+      "get": {
+        "operationId": "CredentialsController_find",
+        "summary": "Fetch a list of credentials",
+        "description": "This call provides a list of credentials for a given tenant",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Credentials fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Credentials fetched successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Credentials fetched successfully",
+                      "data": [{ "id": "71b784a3" }]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Internal server error",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "tags": ["Credentials"]
+      }
+    },
+    "/v1/credentials/{credentialRecordId}": {
+      "get": {
+        "operationId": "CredentialsController_get",
+        "summary": "Fetch a credential",
+        "description": "This call provides a credential for a given tenant",
+        "parameters": [
+          {
+            "name": "credentialRecordId",
+            "required": true,
+            "in": "path",
+            "description": "The credential record ID to retrieve",
+            "schema": { "format": "string", "type": "string" }
+          },
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Credential fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Credential fetched successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Credential fetched successfully",
+                      "data": { "id": "71b784a3" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Credential not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Credential not found",
+                      "data": null
+                    }
+                  },
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Internal server error",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "tags": ["Credentials"]
+      }
+    },
+    "/v1/credentials/{credentialId}/revoke": {
+      "post": {
+        "operationId": "CredentialsController_revoke",
+        "summary": "Revoke a credential",
+        "description": "This call revokes a credential for a given tenant",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Credential revoked successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Credential revoked successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Credential revoked successfully",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Credential not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Credential not found",
+                      "data": null
+                    }
+                  },
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Internal server error",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "tags": ["Credentials"]
+      }
+    },
+    "/v1/credentials/{credentialId}": {
+      "delete": {
+        "operationId": "CredentialsController_delete",
+        "summary": "Delete a credential",
+        "description": "This call deletes a credential for a given tenant",
+        "parameters": [
+          {
+            "name": "credentialRecordId",
+            "required": true,
+            "in": "path",
+            "description": "The credential record ID to delete",
+            "schema": { "format": "string", "type": "string" }
+          },
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Credential deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Credential deleted successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Credential deleted successfully",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Credential not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Credential not found",
+                      "data": null
+                    }
+                  },
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Internal server error",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "tags": ["Credentials"]
+      }
+    },
+    "/v1/credential-offers": {
+      "get": {
+        "operationId": "CredentialOffersController_find",
+        "summary": "Fetch a list of credential offers",
+        "description": "This call provides a list of credential offers for a given tenant",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Credential offers fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Credential offers fetched successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Credential offers fetched successfully",
+                      "data": [{ "id": "71b784a3" }]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "description": "Something went wrong",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Something went wrong": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Something went wrong",
+                      "error": "Internal Server Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Credential Offers"]
+      },
+      "post": {
+        "operationId": "CredentialOffersController_offer",
+        "summary": "Create a credential offer",
+        "description": "This call creates a credential offer for a given connection ID and credential definition ID",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/OfferPayload" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Credential offer created successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Credential offer created successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Credential offer created successfully",
+                      "data": { "id": "71b784a3" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Credential offer not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Credential offer not found",
+                      "data": null
+                    }
+                  },
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  },
+                  "Credential definition not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Credential definition not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "description": "Something went wrong",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Something went wrong": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Something went wrong",
+                      "error": "Internal Server Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Credential Offers"]
+      }
+    },
+    "/v1/credential-offers/{credentialOfferId}": {
+      "get": {
+        "operationId": "CredentialOffersController_getById",
+        "summary": "Fetch a credential offer by ID",
+        "description": "This call provides a credential offer for a given ID",
+        "parameters": [
+          {
+            "name": "credentialOfferId",
+            "required": true,
+            "in": "path",
+            "description": "The credential offer ID to retrieve",
+            "schema": { "format": "string", "type": "string" }
+          },
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Credential offer fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Credential offer fetched successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Credential offer fetched successfully",
+                      "data": { "id": "71b784a3" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Credential offer not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Credential offer not found",
+                      "data": null
+                    }
+                  },
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "description": "Something went wrong",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Something went wrong": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Something went wrong",
+                      "error": "Internal Server Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Credential Offers"]
+      }
+    },
+    "/v1/credential-offers/self": {
+      "post": {
+        "operationId": "CredentialOffersController_offerToSelf",
+        "summary": "Create a credential offer to self",
+        "description": "This call creates a credential offer for a given credential definition ID",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/OfferPayloadSelf" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Credential offer created successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Credential offer created successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Credential offer created successfully",
+                      "data": { "id": "71b784a3" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Credential offer not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Credential offer not found",
+                      "data": null
+                    }
+                  },
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  },
+                  "Credential definition not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Credential definition not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "description": "Something went wrong",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Something went wrong": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Something went wrong",
+                      "error": "Internal Server Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Credential Offers"]
+      }
+    },
+    "/v1/credential-offers/{credentialOfferId}/accept": {
+      "post": {
+        "operationId": "CredentialOffersController_acceptOffer",
+        "summary": "Accept a credential offer",
+        "description": "This call accepts a credential offer for a given ID",
+        "parameters": [
+          {
+            "name": "credentialOfferId",
+            "required": true,
+            "in": "path",
+            "description": "The credential offer ID to retrieve",
+            "schema": { "format": "string", "type": "string" }
+          },
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Credential offer accepted successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Credential offer accepted successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Credential offer accepted successfully",
+                      "data": { "id": "71b784a3" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Credential offer not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Credential offer not found",
+                      "data": null
+                    }
+                  },
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "description": "Something went wrong",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Something went wrong": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Something went wrong",
+                      "error": "Internal Server Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Credential Offers"]
+      }
+    },
+    "/v1/credential-requests": {
+      "get": {
+        "operationId": "CredentialRequestsController_find",
+        "summary": "Fetch a list of credential requests",
+        "description": "This call provides a list of credential requests for a given tenant",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Credential requests fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Credential requests fetched successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Credential requests fetched successfully",
+                      "data": [{ "id": "71b784a3" }]
+                    }
+                  },
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Credential request not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Credential request not found",
+                      "data": null
+                    }
+                  },
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Internal server error",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Credential Requests"]
+      }
+    },
+    "/v1/credential-requests/{id}": {
+      "get": {
+        "operationId": "CredentialRequestsController_getById",
+        "summary": "Fetch a credential request by id",
+        "description": "This call provides a credential request for a given tenant by id",
+        "parameters": [
+          {
+            "name": "credentialRequestId",
+            "required": true,
+            "in": "path",
+            "description": "The credential request ID to retrieve",
+            "schema": { "format": "string", "type": "string" }
+          },
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Credential request fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Credential request fetched successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Credential request fetched successfully",
+                      "data": { "id": "71b784a3" }
+                    }
+                  },
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Credential request not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Credential request not found",
+                      "data": null
+                    }
+                  },
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Internal server error",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Credential Requests"]
+      }
+    },
+    "/v1/policies/check-reissue": {
+      "post": {
+        "operationId": "PoliciesController_checkAutoReissue",
+        "summary": "Check if a credential can be reissued",
+        "description": "Check if a credential can be reissued",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PolicyParams" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The result of the policy evaluation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "result": { "type": "boolean" } }
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  },
+                  "Credential not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Credential not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Internal server error",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "tags": ["Policies"]
+      }
+    },
+    "/v1/policies/check-revocation": {
+      "post": {
+        "operationId": "PoliciesController_checkAutoRevocation",
+        "summary": "Check if a credential should be revoked",
+        "description": "Check if a credential should be revoked",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PolicyParams" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The result of the policy evaluation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "result": { "type": "boolean" } }
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  },
+                  "Credential not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Credential not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Internal server error",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "tags": ["Policies"]
+      }
+    },
+    "/v1/policies/refresh": {
+      "post": {
+        "operationId": "PoliciesController_checkRefresh",
+        "summary": "Check if a credential should be refreshed",
+        "description": "Check if a credential should be refreshed",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/PolicyParams" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The result of the policy evaluation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": { "result": { "type": "boolean" } }
+                }
+              }
+            }
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  },
+                  "Credential not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Credential not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            },
+            "description": ""
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Internal server error",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            },
+            "description": ""
+          }
+        },
+        "tags": ["Policies"]
+      }
+    }
+  },
+  "info": {
+    "title": "Gaia-X OCM Credential Manager",
+    "description": "",
+    "version": "1.0.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "Attribute": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "value": { "type": "string" },
+          "mimeType": { "type": "string" }
+        },
+        "required": ["name", "value"]
+      },
+      "OfferPayload": {
+        "type": "object",
+        "properties": {
+          "connectionId": { "type": "string" },
+          "credentialDefinitionId": { "type": "string" },
+          "attributes": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Attribute" }
+          },
+          "revocationRegistryDefinitionId": { "type": "string" }
+        },
+        "required": [
+          "connectionId",
+          "credentialDefinitionId",
+          "attributes",
+          "revocationRegistryDefinitionId"
+        ]
+      },
+      "OfferPayloadSelf": {
+        "type": "object",
+        "properties": {
+          "credentialDefinitionId": { "type": "string" },
+          "attributes": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Attribute" }
+          },
+          "revocationRegistryDefinitionId": { "type": "string" }
+        },
+        "required": [
+          "credentialDefinitionId",
+          "attributes",
+          "revocationRegistryDefinitionId"
+        ]
+      },
+      "PolicyParams": {
+        "type": "object",
+        "properties": {
+          "credentialId": {
+            "type": "string",
+            "description": "The credential ID to check the policy for"
+          }
+        },
+        "required": ["credentialId"]
+      }
+    }
+  }
+}

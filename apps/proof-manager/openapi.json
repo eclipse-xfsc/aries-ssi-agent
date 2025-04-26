@@ -1,0 +1,465 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/v1/proofs": {
+      "get": {
+        "operationId": "ProofsController_find",
+        "summary": "Fetch a list of presentation proofs",
+        "description": "This call provides a list of presentation proofs for a given tenant",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Presentation proofs fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Presentation proofs fetched successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Presentation proofs fetched successfully",
+                      "data": []
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tenant not found",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Internal server error",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Presentation Proofs"]
+      },
+      "post": {
+        "operationId": "ProofsController_request",
+        "summary": "Request a presentation proof",
+        "description": "This call requests a presentation proof for a given tenant",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Proof of Vaccination"
+                  },
+                  "connectionId": { "type": "string", "example": "1234567890" },
+                  "requestedAttributes": {
+                    "type": "object",
+                    "additionalProperties": {
+                      "type": "object",
+                      "properties": {
+                        "names": {
+                          "type": "array",
+                          "items": { "type": "string" }
+                        },
+                        "restrictions": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "schema_id": { "type": "string" },
+                              "schema_issuer_id": { "type": "string" },
+                              "schema_name": { "type": "string" },
+                              "schema_version": { "type": "string" },
+                              "issuer_id": { "type": "string" },
+                              "cred_def_id": { "type": "string" },
+                              "rev_reg_id": { "type": "string" },
+                              "schema_issuer_did": { "type": "string" },
+                              "issuer_did": { "type": "string" }
+                            },
+                            "patternProperties": {
+                              "^attr::.*?::marker$": { "enum": ["1", "0"] },
+                              "^attr::.*?::value$": { "type": "string" }
+                            },
+                            "additionalProperties": {
+                              "type": "string",
+                              "anyOf": [
+                                { "enum": ["1", "0"] },
+                                { "type": "string" }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      "required": ["names"]
+                    }
+                  },
+                  "requestedPredicates": {
+                    "type": "object",
+                    "properties": {
+                      "name": { "type": "string" },
+                      "predicateType": { "enum": [">=", ">", "<=", "<"] },
+                      "predicateValue": { "type": "number" },
+                      "restrictions": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "schema_id": { "type": "string" },
+                            "schema_issuer_id": { "type": "string" },
+                            "schema_name": { "type": "string" },
+                            "schema_version": { "type": "string" },
+                            "issuer_id": { "type": "string" },
+                            "cred_def_id": { "type": "string" },
+                            "rev_reg_id": { "type": "string" },
+                            "schema_issuer_did": { "type": "string" },
+                            "issuer_did": { "type": "string" }
+                          },
+                          "patternProperties": {
+                            "^attr::.*?::marker$": { "enum": ["1", "0"] },
+                            "^attr::.*?::value$": { "type": "string" }
+                          },
+                          "additionalProperties": {
+                            "type": "string",
+                            "anyOf": [
+                              { "enum": ["1", "0"] },
+                              { "type": "string" }
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "required": ["name", "predicateType", "predicateValue"]
+                  }
+                },
+                "required": [
+                  "name",
+                  "connectionId",
+                  "requestedAttributes",
+                  "requestedPredicates"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Presentation proof requested successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Presentation proof requested successfully": {
+                    "value": {
+                      "statusCode": 201,
+                      "message": "Presentation proof requested successfully",
+                      "data": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request payload",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Invalid request payload": {
+                    "value": {
+                      "statusCode": 400,
+                      "message": "Invalid request payload",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tenant not found",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Internal server error",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Presentation Proofs"]
+      }
+    },
+    "/v1/proofs/{id}": {
+      "get": {
+        "operationId": "ProofsController_get",
+        "summary": "Fetch a presentation proof by id",
+        "description": "This call provides a presentation proof for a given tenant and id",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Presentation proof fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Presentation proof fetched successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Presentation proof fetched successfully",
+                      "data": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid presentation proof id",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Invalid presentation proof id": {
+                    "value": {
+                      "statusCode": 400,
+                      "message": "Invalid presentation proof id",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tenant not found",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Internal server error",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Presentation Proofs"]
+      },
+      "delete": {
+        "operationId": "ProofsController_delete",
+        "summary": "Delete a presentation proof",
+        "description": "This call deletes a presentation proof for a given tenant",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Presentation proof deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Presentation proof deleted successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Presentation proof deleted successfully",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid presentation proof id",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Invalid presentation proof id": {
+                    "value": {
+                      "statusCode": 400,
+                      "message": "Invalid presentation proof id",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tenant not found",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  },
+                  "Presentation proof not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Presentation proof not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Internal server error",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Presentation Proofs"]
+      }
+    },
+    "/v1/proofs/{proofRecordId}/accept": {
+      "post": {
+        "operationId": "ProofsController_accept",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": { "200": { "description": "" } },
+        "tags": ["Presentation Proofs"]
+      }
+    }
+  },
+  "info": {
+    "title": "Gaia-X OCM Proof Manager",
+    "description": "",
+    "version": "1.0.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": { "schemas": {} }
+}

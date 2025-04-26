@@ -1,0 +1,40 @@
+version: '3.9'
+
+networks:
+  test_network: 
+   # driver: bridge
+    name: test_network
+    external: true
+  
+services:
+  nats:
+    image: nats
+    command:
+      [
+        '--config',
+        'nats-server.conf',
+        '--debug',
+        '--trace',
+        '--user',
+        'nats_user',
+        '--pass',
+        'nats_password',
+      ]
+    networks:
+      - test_network
+
+  nats2: 
+    image: nats
+    command:
+      [
+        '--config',
+        'nats-server.conf',
+        '--debug',
+        '--trace',
+        '--user',
+        'nats_user',
+        '--pass',
+        'nats_password',
+      ]
+    networks:
+      - test_network

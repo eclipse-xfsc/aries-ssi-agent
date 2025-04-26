@@ -1,0 +1,213 @@
+version: '3.9'
+
+# networks:
+#   network2: 
+#     name: network2
+#     driver: bridge
+#   network1:
+#     name: network1
+#     external: true
+
+
+networks:
+  network2: 
+    # driver: bridge
+    name: test_network
+    external: true
+    
+  
+
+services:
+  nats2:
+    image: nats
+    ports:
+      - '4223:4222' #Nats server port
+      - '8223:8222' #Nats server Monitoring port
+    command:
+      [
+        '--config',
+        'nats-server.conf',
+        '--debug',
+        '--trace',
+        '--user',
+        'nats_user',
+        '--pass',
+        'nats_password',
+      ]
+    networks:
+      - network2
+
+  s32:
+    image: minio/minio
+    ports:
+      - '9002:9000'
+      - '9003:9001'
+    environment:
+      MINIO_ROOT_USER: minio
+      MINIO_ROOT_PASSWORD: minio123
+    command: ['server', '/data', '--console-address', ':9003']
+    volumes:
+      - /data
+    networks:
+      - network2
+
+  init-s32:
+    image: minio/mc
+    entrypoint: >
+      /bin/sh -c "
+        sleep 1;
+        /usr/bin/mc config host add ssi-s32 http://s32:9002 minio minio123;
+        /usr/bin/mc mb --ignore-existing ssi-s32/ssi;
+        /usr/bin/mc anonymous set download ssi-s32/ssi;
+        /usr/bin/mc admin user add ssi-s32 ssi-abstraction very-long-secret-key;
+        /usr/bin/mc admin policy attach ssi-s32 readwrite --user=ssi-abstraction;
+        exit 0;
+      "
+    depends_on:
+      - s32
+    networks:
+      - network2
+
+  ssi-abstraction2:
+    build:
+      args:
+        - SERVICE=ssi-abstraction
+    init: true
+    ports:
+      - '4010:3000'
+      - '4015:3001'
+    environment:
+      HTTP_PORT: 3000
+      NATS_URL: nats://nats2:4222
+      NATS_USER: nats_user
+      NATS_PASSWORD: nats_password
+      AGENT_NAME: ssi-abstraction-agent
+      AGENT_WALLET_ID: ssi-wallet-id
+      AGENT_WALLET_KEY: ssi-wallet-key
+      AGENT_HOST: http://ssi-abstraction2
+      AGENT_INBOUND_PORT: 3001
+      AGENT_PUBLIC_DID_SEED: 000000000000000_OCM_E2E_ENDORSER_2
+      AGENT_AUTO_ACCEPT_CONNECTION: true
+      AGENT_AUTO_ACCEPT_CREDENTIAL: contentApproved
+      AGENT_LEDGER_ID: BCOVRIN_TEST
+      TAILS_SERVER_BASE_URL: http://s32:9002
+      TAILS_SERVER_BUCKET_NAME: ssi
+      S3_ACCESS_KEY: ssi-abstraction
+      S3_SECRET: very-long-secret-key
+    depends_on:
+      - nats2
+      - init-s32
+    networks:
+      # - network1
+      - network2
+
+  devtools2:
+    build:
+      target: devtools
+    init: true
+    ports:
+      - '4110:3000'
+    environment:
+      HTTP_PORT: 3000
+      NATS_URL: nats://nats2:4222
+      NATS_USER: nats_user
+      NATS_PASSWORD: nats_password
+    depends_on:
+      - nats2
+    networks:
+      - network2
+
+  schema-manager2:
+    build:
+      args:
+        - SERVICE=schema-manager
+    init: true
+    environment:
+      HTTP_PORT: 3000
+      NATS_URL: nats://nats2:4222
+      NATS_USER: nats_user
+      NATS_PASSWORD: nats_password
+      NATS_MONITORING_URL: http://nats2:8223
+    ports:
+      - '4011:3000'
+    depends_on:
+      - nats2
+    networks:
+      - network2
+
+  connection-manager2:
+    build:
+      args:
+        - SERVICE=connection-manager
+    init: true
+    environment:
+      HTTP_HOST: 0.0.0.0
+      HTTP_PORT: 3000
+      NATS_URL: nats://nats2:4222
+      NATS_USER: nats_user
+      NATS_PASSWORD: nats_password
+      NATS_MONITORING_URL: http://nats2:8223
+    ports:
+      - '4012:3000'
+    depends_on:
+      - nats2
+    networks:
+     # - network1
+      - network2
+
+  credential-manager2:
+    build:
+      args:
+        - SERVICE=credential-manager
+    init: true
+    environment:
+      HTTP_HOST: 0.0.0.0
+      HTTP_PORT: 3000
+      NATS_URL: nats://nats2:4222
+      NATS_USER: nats_user
+      NATS_PASSWORD: nats_password
+      NATS_MONITORING_URL: http://nats2:8223
+    ports:
+      - '4013:3000'
+    depends_on:
+      - nats2
+    networks:
+      - network2
+
+  proof-manager2:
+    build:
+      args:
+        - SERVICE=proof-manager
+    init: true
+    environment:
+      HTTP_HOST: 0.0.0.0
+      HTTP_PORT: 3000
+      NATS_URL: nats://nats2:4222
+      NATS_USER: nats_user
+      NATS_PASSWORD: nats_password
+      NATS_MONITORING_URL: http://nats2:8223
+    ports:
+      - '4014:3000'
+    depends_on:
+      - nats2
+    networks:
+      - network2
+
+  did-manager2:
+    build:
+      args:
+        - SERVICE=did-manager
+    init: true
+    environment:
+      HTTP_HOST: 0.0.0.0
+      HTTP_PORT: 3000
+      NATS_URL: nats://nats2:4222
+      NATS_USER: nats_user
+      NATS_PASSWORD: nats_password
+      NATS_MONITORING_URL: http://nats2:8223
+    ports:
+      - '4016:3000'
+    depends_on:
+      - nats2
+    networks:
+      - network2

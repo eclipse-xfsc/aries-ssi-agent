@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.build.json",
+  "compilerOptions": {
+    "composite": false,
+    "removeComments": true,
+    "declaration": false,
+    "sourceMap": false
+  }
+}

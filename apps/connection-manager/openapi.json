@@ -1,0 +1,488 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/v1/connections": {
+      "get": {
+        "operationId": "ConnectionsController_getAll",
+        "summary": "Fetch a list of connections",
+        "description": "This call provides a list of connections for a given tenant",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Connections fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Connections fetched successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Connections fetched successfully",
+                      "data": []
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tenant not found",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Internal server error",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Connections"]
+      },
+      "post": {
+        "operationId": "ConnectionsController_createWithSelf",
+        "summary": "Create a connection",
+        "description": "This call creates a self connection for a given tenant",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Connection created successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Connection created successfully": {
+                    "value": {
+                      "statusCode": 201,
+                      "message": "Connection created successfully",
+                      "data": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tenant not found",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Internal server error",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Connections"]
+      }
+    },
+    "/v1/connections/{connectionId}": {
+      "get": {
+        "operationId": "ConnectionsController_getById",
+        "summary": "Fetch a connection by ID",
+        "description": "This call provides a connection for a given tenant and connection ID",
+        "parameters": [
+          {
+            "name": "connectionId",
+            "required": true,
+            "in": "path",
+            "description": "The connection ID",
+            "example": "71b784a3",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Connection fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Connection fetched successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Connection fetched successfully",
+                      "data": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Connection not found",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  },
+                  "Connection not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Connection not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Internal server error",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Connections"]
+      }
+    },
+    "/v1/connections/{idOrDid}/block": {
+      "post": {
+        "operationId": "ConnectionsController_block",
+        "summary": "Block a connection",
+        "description": "This call blocks a connection for a given tenant and connection ID",
+        "parameters": [
+          {
+            "name": "idOrDid",
+            "required": true,
+            "in": "path",
+            "description": "The connection ID or DID",
+            "example": "8d74c6ec-fa3e-4a09-91fb-5fd0062da835",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Connection blocked successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Connection blocked successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Connection blocked successfully",
+                      "data": {}
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Connection not found",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  },
+                  "Connection not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Connection not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Internal server error",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Connections"]
+      }
+    },
+    "/v1/invitations": {
+      "post": {
+        "operationId": "InvitationsController_createInvitation",
+        "summary": "Create a new invitation",
+        "description": "This call creates a new invitation for a given tenant",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Invitation created successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Invitation created successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Invitation created successfully",
+                      "data": {
+                        "invitationUrl": "https://example.com/invitation"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tenant not found",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to create invitation",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Failed to create invitation": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Failed to create invitation",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Invitations"]
+      }
+    },
+    "/v1/invitations/receive": {
+      "post": {
+        "operationId": "InvitationsController_receiveInvitation",
+        "summary": "Receive an invitation",
+        "description": "This call receives an invitation for a given tenant",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReceiveInvitationPayload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Invitation received successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Invitation received successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Invitation received successfully",
+                      "data": { "connectionId": "123" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tenant not found",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to receive invitation",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Failed to receive invitation": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Failed to receive invitation",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Invitations"]
+      }
+    }
+  },
+  "info": {
+    "title": "Gaia-X OCM Connection Manager",
+    "description": "",
+    "version": "1.0.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "ReceiveInvitationPayload": {
+        "type": "object",
+        "properties": {
+          "invitationUrl": {
+            "type": "string",
+            "description": "The invitation URL to receive",
+            "example": "https://example.com/invitation"
+          }
+        },
+        "required": ["invitationUrl"]
+      }
+    }
+  }
+}

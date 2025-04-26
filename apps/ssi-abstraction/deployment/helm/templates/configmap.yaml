@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "ssi-abstraction.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "ssi-abstraction.name" . }}
+    helm.sh/chart: {{ include "ssi-abstraction.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:
+  HTTP_HOSTNAME: "localhost"
+  HTTP_PORT: "3000"
+  PORT: "3000"
+  AGENT_NAME: ssi-abstraction-agent
+  AGENT_WALLET_ID: ssi-wallet-id
+  AGENT_HOST: http://localhost
+  AGENT_INBOUND_PORT: "3001"
+  AGENT_AUTO_ACCEPT_CONNECTION: "true"
+  AGENT_AUTO_ACCEPT_CREDENTIAL: contentApproved
+  AGENT_LEDGER_ID: BCOVRIN_TEST
+  TAILS_SERVER_BASE_URL: http://ocm-s3.{{ .Release.Namespace }}.svc.cluster.local:9000
+  TAILS_SERVER_BUCKET_NAME: ssi
+  AGENT_WALLET_STORAGE_TYPE: postgres
+  AGENT_WALLET_STORAGE_CONFIG_HOST: ocm-db.{{ .Release.Namespace }}.svc.cluster.local:5432
+  AGENT_WALLET_STORAGE_CONFIG_TIMEOUT: 10

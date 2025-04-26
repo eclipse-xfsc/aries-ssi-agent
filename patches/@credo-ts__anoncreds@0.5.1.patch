@@ -1,0 +1,16 @@
+diff --git a/build/AnonCredsApi.js b/build/AnonCredsApi.js
+index d8d29a7d6410f90d7e544329ba447d7ee91f24aa..88398c270c21dbc82aea60d327d07668f05ed9e3 100644
+--- a/build/AnonCredsApi.js
++++ b/build/AnonCredsApi.js
+@@ -303,10 +303,7 @@ let AnonCredsApi = class AnonCredsApi {
+                 revocationRegistryDefinition,
+                 options: options.options,
+             });
+-            //  To avoid having unregistered revocation registry definitions in the wallet, the revocation registry definition itself are stored only when the revocation registry definition status is finished, meaning that the revocation registry definition has been successfully registered.
+-            if (result.revocationRegistryDefinitionState.state === 'finished') {
+-                await this.storeRevocationRegistryDefinitionRecord(result, revocationRegistryDefinitionPrivate);
+-            }
++            await this.storeRevocationRegistryDefinitionRecord(result, revocationRegistryDefinitionPrivate);
+             return Object.assign(Object.assign({}, result), { revocationRegistryDefinitionMetadata: Object.assign(Object.assign({}, result.revocationRegistryDefinitionMetadata), { localTailsLocation }) });
+         }
+         catch (error) {

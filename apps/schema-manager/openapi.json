@@ -1,0 +1,552 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/v1/schemas": {
+      "get": {
+        "operationId": "SchemasController_getAll",
+        "summary": "Fetch a list of schemas",
+        "description": "This call provides a list of schemas for a given tenant",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Schemas fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Schemas fetched successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Schemas fetched successfully",
+                      "data": []
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tenant not found",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Internal server error",
+                      "error": "Internal Server Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Schemas"]
+      },
+      "post": {
+        "operationId": "SchemasController_register",
+        "summary": "Register a new schema",
+        "description": "This call provides the capability to create new schema on ledger by name, author, version, schema attributes and type. Later this schema can be used to issue new credential definition. This call returns an information about created schema.",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RegisterSchemaPayload" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Schema registered successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Schema registered successfully": {
+                    "value": {
+                      "statusCode": 201,
+                      "message": "Schema registered successfully",
+                      "data": { "id": "71b784a3" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "All fields are required for schema registration",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "All fields are required for schema registration": {
+                    "value": {
+                      "statusCode": 400,
+                      "message": "All fields are required for schema registration",
+                      "error": "Bad Request"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tenant not found",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Schema already exists",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Schema already exists": {
+                    "value": {
+                      "statusCode": 409,
+                      "message": "Schema already exists",
+                      "error": "Conflict"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Internal server error",
+                      "error": "Internal Server Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Schemas"]
+      }
+    },
+    "/v1/schemas/{schemaId}": {
+      "get": {
+        "operationId": "SchemasController_getById",
+        "summary": "Fetch a schema by id",
+        "description": "This call allows you to retrieve schema data for a given tenant by specifying the `schemaId`.",
+        "parameters": [
+          {
+            "name": "schemaId",
+            "required": true,
+            "in": "path",
+            "description": "The schema ID to retrieve",
+            "schema": { "format": "string", "type": "string" }
+          },
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Schema fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Schema fetched successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Schema fetched successfully",
+                      "data": { "id": "71b784a3" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tenant not found",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "data": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Internal server error",
+                      "error": "Internal Server Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Schemas"]
+      }
+    },
+    "/v1/credential-definitions": {
+      "get": {
+        "operationId": "CredentialDefinitionsController_find",
+        "summary": "Fetch a list of credential definitions",
+        "description": "This call provides a list of credential definitions for a given tenant",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Credential definitions fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Credential definitions fetched successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Credential definitions fetched successfully",
+                      "data": [{ "id": "71b784a3" }]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tenant not found",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "error": "Not Found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Internal server error",
+                      "error": "Internal Server Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Credential Definitions"]
+      },
+      "post": {
+        "operationId": "CredentialDefinitionsController_register",
+        "summary": "Create a credential definition",
+        "description": "This call allows you to create a credential definition for a given tenant",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCredentialDefinitionPayload"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Credential definition created successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Credential definition created successfully": {
+                    "value": {
+                      "statusCode": 201,
+                      "message": "Credential definition created successfully",
+                      "data": { "id": "71b784a3" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Invalid request": {
+                    "value": {
+                      "statusCode": 400,
+                      "message": "Invalid request",
+                      "error": "Bad Request"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tenant not found",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Tenant not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Tenant not found",
+                      "error": "Not Found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Credential definition already exists",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Credential definition already exists": {
+                    "value": {
+                      "statusCode": 409,
+                      "message": "Credential definition already exists",
+                      "error": "Conflict"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Internal server error",
+                      "error": "Internal Server Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Credential Definitions"]
+      }
+    },
+    "/v1/credential-definitions/{credentialDefinitionId}": {
+      "get": {
+        "operationId": "CredentialDefinitionsController_get",
+        "summary": "Fetch a credential definition by ID",
+        "description": "This call provides a credential definition for a given tenant",
+        "parameters": [
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "query",
+            "description": "Specifies the tenant ID",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "credentialDefinitionId",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Credential definition fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Credential definition fetched successfully": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Credential definition fetched successfully",
+                      "data": { "id": "71b784a3" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Credential definition not found",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Credential definition not found": {
+                    "value": {
+                      "statusCode": 404,
+                      "message": "Credential definition not found",
+                      "error": "Not Found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {},
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "statusCode": 500,
+                      "message": "Internal server error",
+                      "error": "Internal Server Error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Credential Definitions"]
+      }
+    }
+  },
+  "info": {
+    "title": "Gaia-X OCM Schema Manager",
+    "description": "",
+    "version": "1.0.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "RegisterSchemaPayload": {
+        "type": "object",
+        "properties": {
+          "issuerDid": { "type": "string" },
+          "name": { "type": "string" },
+          "version": { "type": "string" },
+          "attributeNames": { "type": "array", "items": { "type": "string" } }
+        },
+        "required": ["issuerDid", "name", "version", "attributeNames"]
+      },
+      "CreateCredentialDefinitionPayload": {
+        "type": "object",
+        "properties": {
+          "issuerDid": { "type": "string" },
+          "schemaId": { "type": "string" },
+          "tag": { "type": "string" },
+          "supportsRevocation": { "type": "boolean" }
+        },
+        "required": ["issuerDid", "schemaId", "tag", "supportsRevocation"]
+      }
+    }
+  }
+}

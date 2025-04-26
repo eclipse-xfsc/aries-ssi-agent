@@ -1,0 +1,17 @@
+name: Docker and Helm
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+  
+jobs:
+  dockerbuild:
+    strategy:
+      matrix:
+        service: [connection-manager, credential-manager, did-manager, proof-manager, ssi-abstraction, schema-manager, tenant-manager]
+    uses: eclipse-xfsc/dev-ops/.github/workflows/dockerbuild.yml@main
+    with: 
+      build_args: --build-arg SERVICE=${{ matrix.service }}
+  helm:
+    uses: eclipse-xfsc/dev-ops/.github/workflows/helm.yml@main
