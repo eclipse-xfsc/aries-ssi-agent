@@ -13,6 +13,6 @@ jobs:
     uses: eclipse-xfsc/dev-ops/.github/workflows/dockerbuild.yml@main
     secrets: inherit
     with: 
-      build_args: --build-arg SERVICE=${{ matrix.service }}
+      build_args: SERVICE=${{ matrix.service }}
       service: ${{ matrix.service }}
       buildContext: apps/${{ matrix.service }}
