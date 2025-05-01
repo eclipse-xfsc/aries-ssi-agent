@@ -15,4 +15,4 @@ jobs:
     with: 
       build_args: SERVICE=${{ matrix.service }}
       service: ${{ matrix.service }}
-      buildContext: apps/${{ matrix.service }}
+      buildContext: apps
