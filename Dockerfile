@@ -4,7 +4,7 @@ ARG SERVICE
 
 WORKDIR /home/node/app
 
-RUN corepack enable
+RUN corepack enable && corepack prepare pnpm@8 --activate
 
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig*.json .swcrc ./
 COPY patches ./patches
@@ -19,7 +19,7 @@ ARG SERVICE
 
 WORKDIR ${APP_HOME}
 
-RUN corepack enable
+RUN corepack enable && corepack prepare pnpm@8 --activate
 
 COPY apps/shared ./apps/shared
 COPY --from=dependencies /home/node/app/package.json /home/node/app/pnpm-lock.yaml /home/node/app/pnpm-workspace.yaml /home/node/app/tsconfig*.json /home/node/app/.swcrc ./
@@ -36,7 +36,7 @@ ARG SERVICE
 
 WORKDIR ${APP_HOME}
 
-RUN corepack enable
+RUN corepack enable && corepack prepare pnpm@8 --activate
 
 COPY --from=dependencies /home/node/app/package.json /home/node/app/pnpm-lock.yaml /home/node/app/pnpm-workspace.yaml /home/node/app/tsconfig*.json /home/node/app/.swcrc ./
 COPY --from=dependencies /home/node/app/node_modules ./node_modules
