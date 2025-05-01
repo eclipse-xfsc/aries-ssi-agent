@@ -11,8 +11,10 @@ jobs:
       matrix:
         service: [connection-manager, credential-manager, did-manager, proof-manager, ssi-abstraction, schema-manager, tenant-manager]
     uses: eclipse-xfsc/dev-ops/.github/workflows/dockerbuild.yml@main
+    secrets: inherit
     with: 
       build_args: --build-arg SERVICE=${{ matrix.service }}
       service: ${{ matrix.service }}
   helm:
     uses: eclipse-xfsc/dev-ops/.github/workflows/helm.yml@main
+    secrets: inherit
