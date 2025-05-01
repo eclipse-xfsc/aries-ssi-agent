@@ -15,6 +15,7 @@ jobs:
     with: 
       build_args: --build-arg SERVICE=${{ matrix.service }}
       service: ${{ matrix.service }}
+      buildContext: apps/${{ matrix.service }}
   helm:
     uses: eclipse-xfsc/dev-ops/.github/workflows/helm.yml@main
     secrets: inherit
